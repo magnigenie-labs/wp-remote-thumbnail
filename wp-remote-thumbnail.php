@@ -1,20 +1,20 @@
 <?php
 /*
-Plugin Name: WP Remote Thumbnail
-Plugin URI: http://magnigenie.com/wp-remote-thumbnail-set-external-images-featured-image/
-Description: A small light weight plugin to set external/remote images as post thumbnail/featured image.
-Version: 1.1
-Author: Nirmal Kumar Ram
-Author URI: http://magnigenie.com
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+* Plugin Name: WP Remote Thumbnail
+* Plugin URI: http://magnigenie.com/
+* wp-remote-thumbnail-set-external-images-featured-image/
+* Description: A small light weight plugin to set external/remote images as post thumbnail/featured image.
+* Version: 1.1
+* Author: Nirmal Kumar Ram
+* Author URI: http://magnigenie.com
+* License: GPLv2 or later
+* License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
-?>
-<?php
 
 /**
  * Initialize wprthumb on the post edit screen.
  */
+
 function init_wprthumb() {
 	new wprthumb();
 }
@@ -24,12 +24,12 @@ if ( is_admin() ) {
 	add_action( 'load-post-new.php', 'init_wprthumb' );
 }
 
-
-class wprthumb {
+ class wprthumb {
 
 	/**
 	 * Hook into the appropriate actions when the wprthumb is constructed.
 	 */
+
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
@@ -38,6 +38,7 @@ class wprthumb {
 	/**
 	 * Adds the meta box container.
 	 */
+
 	public function add_meta_box( $post_type ) {
 		if ( post_type_supports( $post_type, 'thumbnail' ) ) {
 			add_meta_box(
@@ -54,8 +55,8 @@ class wprthumb {
 	/**
 	 * Save the meta when the post is saved.
 	 */
-	public function save( $post_id ) {
 
+	public function save( $post_id ) {
 		/*
 		 * We need to verify this came from the our screen and with proper authorization,
 		 * because save_post can be triggered at other times.
@@ -94,14 +95,13 @@ class wprthumb {
 		$image = sanitize_text_field( $_POST['remote_thumb'] );
 		$upload_dir = wp_upload_dir();
 		//Get the remote image and save to uploads directory
-		$img_name = time().'_'.basename( $image, array( 'timeout' => 150 ) );
+		$img_name = time().'_'.basename( $image );
 		$img = wp_remote_get( $image );
 
 		if ( is_wp_error( $img ) ) {
 			$error_message = $img->get_error_message();
 			add_action( 'admin_notices', array( $this, 'wprthumb_admin_notice' ) );
-		}
-		else {
+		} else {
 			$img = wp_remote_retrieve_body( $img );
 			$fp = fopen( $upload_dir['path'].'/'.$img_name , 'w' );
 			fwrite( $fp, $img );
@@ -121,6 +121,8 @@ class wprthumb {
 			//Generate post thumbnail of different sizes.
 			$attach_data = wp_generate_attachment_metadata( $attach_id , $upload_dir['path'].'/'.$img_name );
 			wp_update_attachment_metadata( $attach_id,  $attach_data );
+			update_post_meta( $post_id, $attach_id,  $attach_data );
+
 			//Set as featured image.
 			delete_post_meta( $post_id, '_thumbnail_id' );
 			add_post_meta( $post_id , '_thumbnail_id' , $attach_id, true );
@@ -130,6 +132,7 @@ class wprthumb {
 	/**
 	 * Render Meta Box content.
 	 */
+
 	public function render_meta_box_content( $post ) {
 
 		// Add an nonce field so we can check for it later.
@@ -145,6 +148,7 @@ class wprthumb {
 	/**
 	 * Admin notice for errors.
 	 */
+
 	function wprthumb_admin_notice() { ?>
 	    <div class="error">
 	        <p><?php _e( 'Error while fetching remote thumbnail! Please try again.', 'wprthumb' ); ?></p>
