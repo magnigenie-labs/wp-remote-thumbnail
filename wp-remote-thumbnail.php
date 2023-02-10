@@ -1,12 +1,14 @@
 <?php
-/*
+/**
 * Plugin Name: WP Remote Thumbnail
 * Plugin URI: http://magnigenie.com/
 * wp-remote-thumbnail-set-external-images-featured-image/
 * Description: A small light weight plugin to set external/remote images as post thumbnail/featured image.
-* Version: 1.1
+* Version: 1.2
 * Author: Nirmal Kumar Ram
 * Author URI: http://magnigenie.com
+* Text Domain: wprthumb
+* Domain Path: languages
 * License: GPLv2 or later
 * License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -92,12 +94,12 @@ if ( is_admin() ) {
 		/* All good, its safe for us to save the data now. */
 
 		// Sanitize the user input.
+
 		$image = sanitize_text_field( $_POST['remote_thumb'] );
 		$upload_dir = wp_upload_dir();
 		//Get the remote image and save to uploads directory
 		$img_name = time().'_'.basename( $image );
 		$img = wp_remote_get( $image );
-
 		if ( is_wp_error( $img ) ) {
 			$error_message = $img->get_error_message();
 			add_action( 'admin_notices', array( $this, 'wprthumb_admin_notice' ) );

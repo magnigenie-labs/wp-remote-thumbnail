@@ -3,9 +3,9 @@ Contributors: sagarseth9,Magnigenie
 Contributor's website: http://www.magnigenie.com/
 Tags: url to featured image,remote featured image,remote thumbnail,featured image,external featured image,wp remote thumbnail
 Requires at least: 3.0
-Tested up to: 5.5.1
+Tested up to: 6.1.1
 Requires PHP: 5.4
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=sagar.seth9@gmail.com&item_name=WP%20Remote%20Thumbnail&return=http://magnigenie.com
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,10 @@ This plugin automatically adds a custom metabox to each post type which supports
 
 == Changelog ==
 
+= 1.2 =
+* Fixed: Meta data URL save issue
+* Code cleanup
+
 = 1.1 =
 * Fixed issue with larger images.
 * Increased time out for getting images.
@@ -40,6 +44,10 @@ This plugin automatically adds a custom metabox to each post type which supports
 
 = 1.0 =
 * This is the first version
+
+== Upgrade Notice ==
+= 1.2 =
+This is first version of our plugin. We will notify you when there is a update available.
 
 == Frequently Asked Questions ==
 
